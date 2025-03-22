@@ -4,6 +4,25 @@ import requests
 
 
 def main():
+    """
+    Fetch and display the recent GitHub events of a user.
+
+    This function:
+    - Takes a GitHub username from command-line arguments.
+    - Fetches the user's public event history from the GitHub API.
+    - Parses the event types and counts their occurrences.
+    - Displays a summary of the user's GitHub activity.
+
+    Events tracked:
+    - Pushes, pull requests, commits, repository creation/deletion, forks, and stars.
+
+    Example usage:
+        python main.py <github_username>
+
+    Returns:
+        None
+    """
+
     if len(sys.argv) < 1:
         print("please provide a username")
         return
