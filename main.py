@@ -33,6 +33,11 @@ def main():
 
     if json_response.status_code == 404:
         print("data not found check the given username")
+        return
+
+    if not json_file:
+        print("No recent activity found for this user.")
+        return
 
     event_dict = {}
 
