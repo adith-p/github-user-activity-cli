@@ -5,6 +5,9 @@ import colorama
 import requests
 from colorama import Fore, Back, Style
 
+from resources.event_types import event_list, event_colors
+from utils.helper_func import event_dict_extr
+
 
 def main():
     """
@@ -43,28 +46,7 @@ def main():
         print("No recent activity found for this user.")
         return
 
-    event_dict = {}
-
-    event_list = {
-        "PushEvent": "pushed ",
-        "PullRequestEvent": "opened a pull request in",
-        "CommitCommentEvent": "added a commit comment in",
-        "CreateEvent": "created",
-        "DeleteEvent": "deleted",
-        "ForkEvent": "forked",
-        "WatchEvent": "starred",
-    }
-
-    for items in json_file:
-        event_dict[items["repo"]["name"]] = {
-            "PushEvent": 0,
-            "PullRequestEvent": 0,
-            "CommitCommentEvent": 0,
-            "CreateEvent": 0,
-            "DeleteEvent": 0,
-            "ForkEvent": 0,
-            "WatchEvent": 0,
-        }
+    event_dict = event_dict_extr(json_file)
 
     for items in json_file:
         for events in event_list.keys():
@@ -79,23 +61,45 @@ def main():
                 continue
 
     print(f"{Fore.GREEN }Output:")
+
     for details, repo in event_dict.items():
         for event, values in repo.items():
             if event in event_list and values != 0:
-                if event in ["WatchEvent", "PullRequestEvent"]:
+                event_color = event_colors.get(event, Fore.WHITE)
+                # if event in ["WatchEvent", "PullRequestEvent"]:
+                #     print(
+                #         f"--{event_color}{Style.BRIGHT} {event_list[event]} {Fore.WHITE}{Style.BRIGHT}{details}"
+                #     )
+                # elif event == "PushEvent":
+                #     print(
+                #         f"-- {event_color}{Style.BRIGHT}{event_list[event]} {values} commits to {Fore.WHITE}{Style.BRIGHT} {details}"
+                #     )
+                # elif event == "CreateEvent":
+                #     print(
+                #         f"-- {event_color}{event_list[event]} {Back.YELLOW}{Fore.BLACK}{values}{Style.RESET_ALL} named {details}"
+                #     )
+                # else:
+                #     print(f"-- {event_list[event]} {values} to {details}")
+                if event in ["PushEvent", "CommitCommentEvent"]:
                     print(
-                        f"--{Fore.MAGENTA}{Style.BRIGHT} {event_list[event]} {Fore.WHITE}{Style.BRIGHT}{details}"
-                    )
-                elif event == "PushEvent":
-                    print(
-                        f"-- {Fore.BLUE}{Style.BRIGHT}{event_list[event]} {values} commits to {Fore.WHITE}{Style.BRIGHT} {details}"
+                        f"-- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.YELLOW}{values}{Style.RESET_ALL} commits to {Fore.WHITE}{Style.BRIGHT}{details}{Style.RESET_ALL}"
                     )
                 elif event == "CreateEvent":
                     print(
-                        f"-- {event_list[event]} {Back.YELLOW}{Fore.BLACK}{values}{Style.RESET_ALL} named {details}"
+                        f"-- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.WHITE}{values}{Style.RESET_ALL} named {Fore.WHITE}{details}{Style.RESET_ALL}"
+                    )
+                elif event == "DeleteEvent":
+                    print(
+                        f"-- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.RED}{values}{Style.RESET_ALL} from {Fore.WHITE}{details}{Style.RESET_ALL}"
+                    )
+                elif event in ["ForkEvent", "WatchEvent"]:
+                    print(
+                        f"-- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.WHITE}{details}{Style.RESET_ALL}"
                     )
                 else:
-                    print(f"-- {event_list[event]} {values} to {details}")
+                    print(
+                        f"-- {Fore.MAGENTA}{Style.BRIGHT}{event_list.get(event, 'performed an action in')}{Style.RESET_ALL} {Fore.YELLOW}{Style.RESET_ALL}{Fore.WHITE}{details}{Style.RESET_ALL}"
+                    )
 
 
 if __name__ == "__main__":
