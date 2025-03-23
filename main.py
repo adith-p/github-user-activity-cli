@@ -1,6 +1,8 @@
 import sys
 
+import colorama
 import requests
+from colorama import Fore, Back, Style
 
 
 def main():
@@ -23,7 +25,7 @@ def main():
         None
     """
 
-    if len(sys.argv) < 1:
+    if len(sys.argv) < 2:
         print("please provide a username")
         return
 
