@@ -24,9 +24,10 @@ def main():
     Returns:
         None
     """
+    colorama.init(autoreset=True)
 
     if len(sys.argv) < 2:
-        print("please provide a username")
+        print(Fore.RED + "please provide a username")
         return
 
     username = sys.argv[1]
@@ -76,14 +77,18 @@ def main():
                 event_dict[items["repo"]["name"]][events] += 1
                 continue
 
-    print("Output")
+    print(f"{Fore.GREEN }Output:")
     for details, repo in event_dict.items():
         for event, values in repo.items():
             if event in event_list and values != 0:
                 if event in ["WatchEvent", "PullRequestEvent"]:
-                    print(f"-- {event_list[event]} {details}")
+                    print(
+                        f"--{Fore.MAGENTA}{Style.BRIGHT} {event_list[event]} {Fore.WHITE}{Style.BRIGHT}{details}"
+                    )
                 elif event == "PushEvent":
-                    print(f"-- {event_list[event]} {values} commits to {details}")
+                    print(
+                        f"-- {Fore.BLUE}{Style.BRIGHT}{event_list[event]} {values} commits to {Fore.WHITE}{Style.BRIGHT} {details}"
+                    )
                 else:
                     print(f"-- {event_list[event]} {values} to {details}")
 
