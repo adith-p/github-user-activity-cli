@@ -1,6 +1,7 @@
 import sys
-from turtle import back
+from turtle import back, backward
 
+from click import style
 import colorama
 import requests
 from colorama import Fore, Back, Style
@@ -61,44 +62,40 @@ def main():
                 continue
 
     print(f"{Fore.GREEN }Output:")
+    print(" ", end="")
+    print(
+        f"{Back.WHITE}{Fore.BLACK}{Style.BRIGHT} Event history of github.com/{username} "
+    )
 
     for details, repo in event_dict.items():
         for event, values in repo.items():
             if event in event_list and values != 0:
                 event_color = event_colors.get(event, Fore.WHITE)
-                # if event in ["WatchEvent", "PullRequestEvent"]:
-                #     print(
-                #         f"--{event_color}{Style.BRIGHT} {event_list[event]} {Fore.WHITE}{Style.BRIGHT}{details}"
-                #     )
-                # elif event == "PushEvent":
-                #     print(
-                #         f"-- {event_color}{Style.BRIGHT}{event_list[event]} {values} commits to {Fore.WHITE}{Style.BRIGHT} {details}"
-                #     )
-                # elif event == "CreateEvent":
-                #     print(
-                #         f"-- {event_color}{event_list[event]} {Back.YELLOW}{Fore.BLACK}{values}{Style.RESET_ALL} named {details}"
-                #     )
-                # else:
-                #     print(f"-- {event_list[event]} {values} to {details}")
                 if event in ["PushEvent", "CommitCommentEvent"]:
                     print(
-                        f"-- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.YELLOW}{values}{Style.RESET_ALL} commits to {Fore.WHITE}{Style.BRIGHT}{details}{Style.RESET_ALL}"
+                        f"{Fore.WHITE} -- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.YELLOW}{values}{Style.RESET_ALL} commits to {Fore.WHITE}{Style.BRIGHT}{details}{Style.RESET_ALL}"
                     )
                 elif event == "CreateEvent":
-                    print(
-                        f"-- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.WHITE}{values}{Style.RESET_ALL} named {Fore.WHITE}{details}{Style.RESET_ALL}"
-                    )
+                    if repo[event] == "branch":
+                        print(
+                            f"{Fore.WHITE} -- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.WHITE}{values}{Style.RESET_ALL} in {Fore.WHITE}{details}{Style.RESET_ALL}"
+                        )
+                    else:
+
+                        print(
+                            f"{Fore.WHITE} -- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.WHITE}{values}{Style.RESET_ALL} named {Fore.WHITE}{details}{Style.RESET_ALL}"
+                        )
                 elif event == "DeleteEvent":
                     print(
-                        f"-- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.RED}{values}{Style.RESET_ALL} from {Fore.WHITE}{details}{Style.RESET_ALL}"
+                        f"{Fore.WHITE} -- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.RED}{values}{Style.RESET_ALL} from {Fore.WHITE}{details}{Style.RESET_ALL}"
                     )
                 elif event in ["ForkEvent", "WatchEvent"]:
                     print(
-                        f"-- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.WHITE}{details}{Style.RESET_ALL}"
+                        f"{Fore.WHITE} -- {event_color}{Style.BRIGHT}{event_list[event]}{Style.RESET_ALL} {Fore.WHITE}{details}{Style.RESET_ALL}"
                     )
                 else:
                     print(
-                        f"-- {Fore.MAGENTA}{Style.BRIGHT}{event_list.get(event, 'performed an action in')}{Style.RESET_ALL} {Fore.YELLOW}{Style.RESET_ALL}{Fore.WHITE}{details}{Style.RESET_ALL}"
+                        f"{Fore.WHITE} -- {Fore.MAGENTA}{Style.BRIGHT}{event_list.get(event, 'performed an action in')}{Style.RESET_ALL} {Fore.YELLOW}{Style.RESET_ALL}{Fore.WHITE}{details}{Style.RESET_ALL}"
                     )
 
 

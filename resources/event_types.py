@@ -1,14 +1,16 @@
-from colorama import Fore
-
+from colorama import Fore, Style
 
 event_list = {
-    "PushEvent": "pushed ",
+    "PushEvent": "pushed",
     "PullRequestEvent": "opened a pull request in",
     "CommitCommentEvent": "added a commit comment in",
     "CreateEvent": "created",
     "DeleteEvent": "deleted",
     "ForkEvent": "forked",
     "WatchEvent": "starred",
+    "PullRequestReviewEvent": "reviewed a pull request in",
+    "IssueCommentEvent": "commented on an issue in",
+    "PublicEvent": "made public",
 }
 
 event_colors = {
@@ -18,5 +20,8 @@ event_colors = {
     "CreateEvent": Fore.GREEN,
     "DeleteEvent": Fore.RED,
     "ForkEvent": Fore.YELLOW,
-    "WatchEvent": Fore.YELLOW,
+    "WatchEvent": Fore.LIGHTYELLOW_EX,
+    "PullRequestReviewEvent": Fore.CYAN,
+    "IssueCommentEvent": Fore.CYAN,
+    "PublicEvent": Fore.MAGENTA,
 }
