@@ -1,4 +1,5 @@
 import sys
+from turtle import back
 
 import colorama
 import requests
@@ -88,6 +89,10 @@ def main():
                 elif event == "PushEvent":
                     print(
                         f"-- {Fore.BLUE}{Style.BRIGHT}{event_list[event]} {values} commits to {Fore.WHITE}{Style.BRIGHT} {details}"
+                    )
+                elif event == "CreateEvent":
+                    print(
+                        f"-- {event_list[event]} {Back.YELLOW}{Fore.BLACK}{values}{Style.RESET_ALL} named {details}"
                     )
                 else:
                     print(f"-- {event_list[event]} {values} to {details}")
