@@ -1,7 +1,7 @@
+import argparse
 import sys
-from turtle import back, backward
 
-from click import style
+
 import colorama
 import requests
 from colorama import Fore, Back, Style
@@ -31,11 +31,19 @@ def main():
     """
     colorama.init(autoreset=True)
 
-    if len(sys.argv) < 2:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-u", "--username", type=str, help="provide the username")
+    args = parser.parse_args()
+
+    # if len(sys.argv) < 2:
+    #     print(Fore.RED + "please provide a username")
+    #     return
+
+    if not args.username:
         print(Fore.RED + "please provide a username")
         return
 
-    username = sys.argv[1]
+    username = args.username
     json_response = requests.get(f"https://api.github.com/users/{username}/events")
     json_file = json_response.json()
 
